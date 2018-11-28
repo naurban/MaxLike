@@ -1,15 +1,19 @@
+
 ###https://www.pwrc.usgs.gov/bbs/RawData/Choose-Method.cfm
 
-
+#############################################
 data(carw)
-# Convert data frame to a list of rasters rl <- lapply(carw.data$raster.data, function(x) { m <- matrix(x, nrow=carw.data$dim[1], ncol=carw.data$dim[2], byrow=TRUE) r <- raster(m)
-4 MaungaWhau
-extent(r) <- carw.data$ext r
+# Convert data frame to a list of rasters 
+rl <- lapply(carw.data$raster.data, function(x) { 
+  m <- matrix(x, nrow=carw.data$dim[1], ncol=carw.data$dim[2], byrow=TRUE) 
+  r <- raster(m)
+  extent(r) <- carw.data$ext 
+  r
 })
 # Stack and name them rs <- stack(rl[[1]], rl[[2]], rl[[3]], rl[[4]], rl[[5]], rl[[6]]) names(rs) <- names(carw.data$raster.data)
 plot(rs)
 
-
+##############################################
 data(MaungaWhau) 
 elev <- raster(MaungaWhau$elev, xmn=0, xmx=61, ymn=0, ymx=87) 
 precip <- raster(MaungaWhau$precip, xmn=0, xmx=61, ymn=0, ymx=87)
@@ -79,8 +83,10 @@ fm2 <- maxlike(~pcMix + I(pcMix^2) + pcDec + I(pcDec^2)+ pcCon
               x=presenceData, z=backgroundData, 
               method="BFGS", removeDuplicates=TRUE, savedata=TRUE)
 summary(fm2)
-fm2$rasters <- rs psi.hat2 <- predict(fm2)
+fm2$rasters <- rs 
+psi.hat2 <- predict(fm2)
 
+###############################################
 ## Not run:
 # Simulation example
 set.seed(131) 
