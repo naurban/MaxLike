@@ -19,7 +19,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 These data come from the North American Breeding Bird Survey.
 
-*Royle, J.A., R.B. Chandler, C. Yackulic and J. D. Nichols. 2012. Likelihood analysis of species occurrence probability from presence-only data for modelling species distributions. Methods in Ecology and Evolution. doi: 10.1111/j.2041-210X.2011.00182.x* 
+[*Royle, J.A., R.B. Chandler, C. Yackulic and J. D. Nichols. 2012. Likelihood analysis of species occurrence probability from presence-only data for modelling species distributions. Methods in Ecology and Evolution. doi: 10.1111/j.2041-210X.2011.00182.x*](Royle_et_al-2012-Methods_in_Ecology_and_Evolution.pdf) 
 
 
 ```{r carw, message=FALSE,echo=FALSE}
@@ -52,12 +52,12 @@ plot(precip)
 
 ## Model occurrence probability using presence-only data
 
-"This function estimates the probability of occurrence using presence-only data and spatially-referenced covariates. Species distribution maps can be created by plotting the expected values of occurrence probability. The model is described by Royle et al. (2012)."
+"This function estimates the probability of occurrence using presence-only data and spatially-referenced covariates. Species distribution maps can be created by plotting the expected values of occurrence probability. The model is described by [Royle et al. (2012)](https://besjournals.onlinelibrary.wiley.com/doi/epdf/10.1111/j.2041-210X.2011.00182.x)."
 
 
 **Warning:** "Maximizing the log-likelihood function is achieved using the optim function, which can fail to ﬁnd the global optima if sensible starting values are not supplied. The default starting values are rep(0, npars), which will often be adequate if the covariates have been standardized. Standardizing covariates is thus recommended. Even when covariates are standardized, it is always a good idea to try various starting values to see if the log-likelihood can be increased. When ﬁtting models with many parameters, good starting values can be found by ﬁtting simpler models ﬁrst".
 
-**Notes:** "**1.)**Points and rasters should the same coordinate system. The program does not check this so it is up to the user.**2.)**The MAXENT software assumes that species prevalence is known a priori. If the user does not specify a value for prevalence, prevalence is set to 0.5. MAXENT predictions of occurrence probability are highly sensitive to this setting. In contrast, maxlike directly estimates prevalence."
+**Note: 1.)**"Points and rasters should the same coordinate system. The program does not check this so it is up to the user.**2.)**The MAXENT software assumes that species prevalence is known a priori. If the user does not specify a value for prevalence, prevalence is set to 0.5. MAXENT predictions of occurrence probability are highly sensitive to this setting. In contrast, maxlike directly estimates prevalence."
 
 ```{r pressure, echo=FALSE}
 plot(pressure)
