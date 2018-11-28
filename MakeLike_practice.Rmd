@@ -7,29 +7,57 @@ output:
     theme: lumen
     toc: true
     toc_float: true
-    fig_width: 4
-    fig_heigth: 4
+    fig_width: 8
+    fig_heigth: 8
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## GitHub Documents
+## The Carolina Wren data used by Royle et al. (2012)
 
-This is an R Markdown format used for publishing markdown documents to GitHub. When you click the **Knit** button all R code chunks are run and a markdown file (.md) suitable for publishing to GitHub is generated.
+These data come from the North American Breeding Bird Survey.
 
-## Including Code
+*Royle, J.A., R.B. Chandler, C. Yackulic and J. D. Nichols. 2012. Likelihood analysis of species occurrence probability from presence-only data for modelling species distributions. Methods in Ecology and Evolution. doi: 10.1111/j.2041-210X.2011.00182.x* 
 
-You can include R code in the document as follows:
 
-```{r cars}
-summary(cars)
+```{r carw, message=FALSE,echo=FALSE}
+library(maxlike)
+data(carw)
+# Convert data frame to a list of rasters 
+rl <- lapply(carw.data$raster.data, function(x) { 
+  m <- matrix(x, nrow=carw.data$dim[1], ncol=carw.data$dim[2], byrow=TRUE) 
+  r <- raster(m)
+  extent(r) <- carw.data$ext 
+  r
+})
+# Stack and name them 
+rs <- stack(rl[[1]], rl[[2]], rl[[3]], rl[[4]], rl[[5]], rl[[6]]) 
+names(rs) <- names(carw.data$raster.data)
+plot(rs)
 ```
 
-## Including Plots
+## Fake data for the Maunga Whau volcano
 
-You can also embed plots, for example:
+Based upon volcano in the datasets package with no coordinate system attributes
+
+```{r Maungawhau, message=FALSE,echo=FALSE}
+data(MaungaWhau) 
+elev <- raster(MaungaWhau$elev, xmn=0, xmx=61, ymn=0, ymx=87) 
+precip <- raster(MaungaWhau$precip, xmn=0, xmx=61, ymn=0, ymx=87)
+plot(elev)
+plot(precip)
+```
+
+## Model occurrence probability using presence-only data
+
+"This function estimates the probability of occurrence using presence-only data and spatially-referenced covariates. Species distribution maps can be created by plotting the expected values of occurrence probability. The model is described by Royle et al. (2012)."
+
+
+**Warning:** "Maximizing the log-likelihood function is achieved using the optim function, which can fail to ﬁnd the global optima if sensible starting values are not supplied. The default starting values are rep(0, npars), which will often be adequate if the covariates have been standardized. Standardizing covariates is thus recommended. Even when covariates are standardized, it is always a good idea to try various starting values to see if the log-likelihood can be increased. When ﬁtting models with many parameters, good starting values can be found by ﬁtting simpler models ﬁrst".
+
+**Notes:** "**1.)**Points and rasters should the same coordinate system. The program does not check this so it is up to the user.**2.)**The MAXENT software assumes that species prevalence is known a priori. If the user does not specify a value for prevalence, prevalence is set to 0.5. MAXENT predictions of occurrence probability are highly sensitive to this setting. In contrast, maxlike directly estimates prevalence."
 
 ```{r pressure, echo=FALSE}
 plot(pressure)
